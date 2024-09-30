@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRIENDS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>FRIENDS</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: 'What does Ross call his potato costume?', answer: 'Spud-nik' },
+        { question: 'Who was Monica’s first serious boyfriend?', answer: 'Richard' },
+        { question: 'What fruit is Ross allergic to?', answer: 'Kiwi' },
+        { question: 'What is the name of Joey’s soap opera character?', answer: 'Dr. Drake Ramoray' },
+        { question: 'What was the name of Ross’s second wife?', answer: 'Emily' },
+        { question: 'What was the name of the coffee shop the friends frequently visited?', answer: 'Central Perk' },
+        { question: 'Who was Phoebe’s husband?', answer: 'Mike Hannigan' },
+        { question: 'Who had to move out of the apartment when Monica and Chandler got married?', answer: 'Joey' },
+        { question: 'Which is NOT a category in the trivia game Ross creates about his friends: "Literature," "Social Studies," "It\'s All Relative," or "Ancient History"?', answer: 'Social Studies' },
+        { question: 'Which item left at the hotel signals to Joey that Chandler and Monica are dating?', answer: 'Monica\'s eyelash curler' },
+        { question: 'Which character\'s death happens first: Mr. Heckles or Ross and Monica\'s grandmother?', answer: 'Mr. Heckles' },
+        { question: 'What was the name of Rachel\'s prom date?', answer: 'Chip' },
+        { question: 'Why does Phoebe blow off plans with Joey after getting angry with him for doing the same to her?', answer: 'Her ex David is back in town.' },
+        { question: 'Where is Rachel\'s first fashion job?', answer: 'Fortunata Fashions' },
+        { question: 'What song did Phoebe write that became famous?', answer: 'Smelly Cat' },
+        { question: 'What does Ross name his second child?', answer: 'Emma' },
+        { question: 'What was the name of Monica’s first serious boyfriend?', answer: 'Richard' },
+        { question: 'What does Monica do for a living?', answer: 'Chef' },
+        { question: 'Who sings the theme song for FRIENDS?', answer: 'The Rembrandts' },
+        { question: 'What is Joey’s favorite food?', answer: 'Pizza' },
+        { question: 'How many sisters does Joey have?', answer: 'Seven' },
+        { question: 'What did Ross name his monkey?', answer: 'Marcel' },
+        { question: 'What does Phoebe call her twin sister?', answer: 'Ursula' },
+        { question: 'What is Chandler’s job for most of the series?', answer: 'Transponster' },
+        { question: 'What was the name of Ross’s first wife?', answer: 'Carol' },
+        { question: 'What instrument does Phoebe play?', answer: 'Guitar' },
+        { question: 'What is Monica’s biggest pet peeve?', answer: 'Animals dressed as humans' },
+        { question: 'What does Ross always say before he moves on with a new relationship?', answer: 'Pivot!' },
+        { question: 'What is the name of Chandler’s wife?', answer: 'Monica' },
+        { question: 'What fruit is Ross allergic to?', answer: 'Kiwi' },
+        { question: 'What was the name of the coffee shop the friends frequently visited?', answer: 'Central Perk' },
+        { question: 'Who was Phoebe’s husband?', answer: 'Mike Hannigan' },
+        { question: 'What is Joey’s favorite food?', answer: 'Pizza' },
+        { question: 'What did Ross name his second child?', answer: 'Emma' },
+        { question: 'What is Monica’s biggest pet peeve?', answer: 'Animals dressed as humans' },
+        { question: 'What instrument does Phoebe play?', answer: 'Guitar' },
+        { question: 'What did Chandler do to propose to Monica?', answer: 'He placed the ring in a box and pretended to give her a gift.' },
+        { question: 'How many times was Ross married?', answer: 'Three times' },
+        { question: 'What was the name of Joey’s soap opera character?', answer: 'Dr. Drake Ramoray' },
+        { question: 'What was the name of the show Joey starred in?', answer: 'Days of Our Lives' },
+        { question: 'What does Phoebe say when she hears the song "I Will Always Love You"?', answer: 'It’s about love and break-ups.' },
+        { question: 'What song does Ross play on the keyboard for Rachel’s birthday?', answer: 'The Theme from “Casablanca”' },
+        { question: 'What was the name of Monica’s first serious boyfriend?', answer: 'Richard' },
+        { question: 'Who was Monica’s first kiss?', answer: 'Chandler' },
+        { question: 'What was Ross’s first dinosaur-related job?', answer: 'Paleontologist' },
+        { question: 'Who is Joey’s best friend?', answer: 'Chandler' },
+        { question: 'Who famously said, “We were on a break!”?', answer: 'Ross' }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
+</body>
+</html>
